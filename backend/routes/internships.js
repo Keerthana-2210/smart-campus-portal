@@ -24,7 +24,7 @@ router.get("/", async (req, res) => {
 // @access  Public or Private/Admin (Removing auth temporarily to ensure form works cleanly, but can be added back)
 router.post("/", async (req, res) => {
     try {
-        const { companyName, role, description, location, stipend, eligibility, deadline } = req.body;
+        const { companyName, role, description, location, stipend, eligibility, deadline, jobDescriptionFile } = req.body;
 
         const internship = await Internship.create({
             companyName,
@@ -34,6 +34,7 @@ router.post("/", async (req, res) => {
             stipend,
             eligibility,
             deadline,
+            jobDescriptionFile
         });
 
         res.status(201).json(internship);
@@ -48,7 +49,7 @@ router.post("/", async (req, res) => {
 // @access  Public or Private/Student
 router.post("/apply", async (req, res) => {
     try {
-        const { internshipId, studentId } = req.body;
+        const { internshipId, studentId, resumeUrl } = req.body;
 
         // Check if internship exists
         const internship = await Internship.findById(internshipId);
@@ -69,6 +70,7 @@ router.post("/apply", async (req, res) => {
         const application = await Application.create({
             student: studentId,
             internship: internshipId,
+            resumeUrl,
             status: "pending",
         });
 

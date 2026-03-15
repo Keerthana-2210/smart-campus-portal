@@ -10,7 +10,8 @@ const AdminDashboard = () => {
         location: '',
         stipend: '',
         eligibility: '',
-        deadline: ''
+        deadline: '',
+        jobDescriptionFile: null
     });
 
     useEffect(() => {
@@ -40,6 +41,19 @@ const AdminDashboard = () => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setFormData({ ...formData, jobDescriptionFile: reader.result });
+            };
+            reader.readAsDataURL(file);
+        } else {
+            setFormData({ ...formData, jobDescriptionFile: null });
+        }
+    };
+
     const handleCreateInternship = async (e) => {
         e.preventDefault();
         try {
@@ -58,8 +72,12 @@ const AdminDashboard = () => {
                     location: '',
                     stipend: '',
                     eligibility: '',
-                    deadline: ''
+                    deadline: '',
+                    jobDescriptionFile: null
                 });
+                // Reset file input via ID
+                const fileInput = document.getElementById('jd-file-input');
+                if(fileInput) fileInput.value = '';
             } else {
                 const errorData = await response.json();
                 alert(`Failed: ${errorData.message}`);
@@ -159,6 +177,11 @@ const AdminDashboard = () => {
                         <label>Application Deadline</label>
                         <input type="date" name="deadline" value={formData.deadline} onChange={handleInputChange} required />
                     </div>
+                    <div className="form-group">
+                        <label>Job Description File (PDF)</label>
+                        <input id="jd-file-input" type="file" accept=".pdf,.doc,.docx" onChange={handleFileChange} />
+                        <small style={{color: '#666', display: 'block', marginTop: '0.25rem'}}>Attach a detailed job description document (optional)</small>
+                    </div>
                     <button type="submit" className="btn-primary" style={{ marginTop: '1rem' }}>Post Internship</button>
                 </form>
             </div>
@@ -175,6 +198,7 @@ const AdminDashboard = () => {
                                 <tr style={{ borderBottom: '2px solid #e2e8f0' }}>
                                     <th style={{ padding: '0.75rem' }}>Student Name</th>
                                     <th style={{ padding: '0.75rem' }}>Email</th>
+                                    <th style={{ padding: '0.75rem' }}>Resume</th>
                                     <th style={{ padding: '0.75rem' }}>Company</th>
                                     <th style={{ padding: '0.75rem' }}>Role</th>
                                     <th style={{ padding: '0.75rem' }}>Status</th>
@@ -186,6 +210,15 @@ const AdminDashboard = () => {
                                     <tr key={app._id} style={{ borderBottom: '1px solid #e2e8f0' }}>
                                         <td style={{ padding: '0.75rem' }}>{app.student?.name}</td>
                                         <td style={{ padding: '0.75rem' }}>{app.student?.email}</td>
+                                        <td style={{ padding: '0.75rem' }}>
+                                            {app.resumeUrl ? (
+                                                <a href={app.resumeUrl} target="_blank" rel="noopener noreferrer" style={{ color: '#0056b3', textDecoration: 'underline' }}>
+                                                    View File
+                                                </a>
+                                            ) : (
+                                                <span style={{ color: '#999' }}>No File</span>
+                                            )}
+                                        </td>
                                         <td style={{ padding: '0.75rem' }}>{app.internship?.companyName || app.internship?.company?.name || 'Company'}</td>
                                         <td style={{ padding: '0.75rem' }}>{app.internship?.role || app.internship?.title || 'Role'}</td>
                                         <td style={{ padding: '0.75rem' }}>

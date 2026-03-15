@@ -31,6 +31,10 @@ const internshipSchema = new mongoose.Schema(
             type: Date,
             required: true,
         },
+        jobDescriptionFile: {
+            type: String, // Base64 encoded string
+            required: false,
+        },
         isActive: {
             type: Boolean,
             default: true,

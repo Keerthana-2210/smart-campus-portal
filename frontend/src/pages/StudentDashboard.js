@@ -6,6 +6,7 @@ const StudentDashboard = () => {
     const [internships, setInternships] = useState([]);
     const [notifications, setNotifications] = useState([]);
     const [selectedInternship, setSelectedInternship] = useState(null); // Modal state
+    const [resumeFile, setResumeFile] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -47,6 +48,7 @@ const StudentDashboard = () => {
 
     const handleApply = async (internshipId) => {
         if (!user) return alert("Please log in to apply");
+        if (!resumeFile) return alert("Please attach your resume before applying.");
 
         try {
             const token = localStorage.getItem('token');
@@ -58,13 +60,15 @@ const StudentDashboard = () => {
                 },
                 body: JSON.stringify({
                     internshipId,
-                    studentId: user._id || user.id
+                    studentId: user._id || user.id,
+                    resumeUrl: resumeFile
                 })
             });
 
             if (response.status === 201) {
                 alert("Successfully applied for internship!");
                 setSelectedInternship(null); // Close modal
+                setResumeFile(null); // Reset resume file state
             } else {
                 const errData = await response.json();
                 alert(errData.message || "Could not apply.");
@@ -72,6 +76,17 @@ const StudentDashboard = () => {
         } catch (err) {
             console.error("Apply error", err);
             alert("Error connecting to server.");
+        }
+    };
+
+    const handleResumeChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => setResumeFile(reader.result);
+            reader.readAsDataURL(file);
+        } else {
+            setResumeFile(null);
         }
     };
 
@@ -98,10 +113,22 @@ const StudentDashboard = () => {
                                 display: 'flex', 
                                 alignItems: 'center', 
                                 gap: '0.75rem',
-                                color: '#15803d'
+                                color: '#15803d',
+                                fontWeight: notif.type === 'internship_selection' ? 'bold' : 'normal'
                             }}>
-                                <span>🔔</span>
-                                <span>{notif.message}</span>
+                                <span style={{ fontSize: '1.5rem' }}>
+                                    {notif.type === 'internship_selection' ? '🎉' : '🔔'}
+                                </span>
+                                <div>
+                                    {notif.type === 'internship_selection' ? (
+                                        <>
+                                            <h4 style={{ margin: 0, color: '#166534' }}>Congratulations! You have been shortlisted</h4>
+                                            <p style={{ margin: 0, fontSize: '0.9rem', marginTop: '0.2rem' }}>{notif.message}</p>
+                                        </>
+                                    ) : (
+                                        <span>{notif.message}</span>
+                                    )}
+                                </div>
                             </li>
                         ))}
                     </ul>
@@ -167,7 +194,7 @@ const StudentDashboard = () => {
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                             <h2 style={{ color: '#0f172a' }}>{selectedInternship.role} at {selectedInternship.companyName}</h2>
                             <button
-                                onClick={() => setSelectedInternship(null)}
+                                onClick={() => { setSelectedInternship(null); setResumeFile(null); }}
                                 style={{ background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer', color: '#64748b' }}
                             >×</button>
                         </div>
@@ -185,6 +212,31 @@ const StudentDashboard = () => {
                                 <li><strong>Stipend:</strong> {selectedInternship.stipend}</li>
                                 <li><strong>Deadline:</strong> {new Date(selectedInternship.deadline).toLocaleDateString()}</li>
                             </ul>
+
+                            {selectedInternship.jobDescriptionFile && (
+                                <a 
+                                    href={selectedInternship.jobDescriptionFile} 
+                                    download="Job_Description.pdf"
+                                    style={{ 
+                                        display: 'inline-block', padding: '0.5rem 1rem', marginBottom: '1.5rem', 
+                                        backgroundColor: '#f1f5f9', color: '#334155', borderRadius: '4px', textDecoration: 'none', fontWeight: 'bold' 
+                                    }}
+                                >
+                                    📥 Download Attached Job Description
+                                </a>
+                            )}
+                        </div>
+
+                        <div style={{ marginBottom: '1.5rem', padding: '1rem', backgroundColor: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
+                            <label style={{ display: 'block', fontWeight: 'bold', marginBottom: '0.5rem', color: '#334155' }}>
+                                Upload Resume (PDF / Word)
+                            </label>
+                            <input 
+                                type="file" 
+                                accept=".pdf,.doc,.docx" 
+                                onChange={handleResumeChange} 
+                                style={{ width: '100%', padding: '0.5rem', backgroundColor: 'white', border: '1px solid #cbd5e1', borderRadius: '4px' }}
+                            />
                         </div>
 
                         <button
