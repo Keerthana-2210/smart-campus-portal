@@ -91,7 +91,7 @@ router.put("/select/:id", async (req, res) => {
             return res.status(404).json({ message: "Application not found" });
         }
 
-        application.status = "Selected";
+        application.status = "accepted";
         await application.save();
 
         // Create notification for the student

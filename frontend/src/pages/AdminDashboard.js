@@ -191,9 +191,9 @@ const AdminDashboard = () => {
                                         <td style={{ padding: '0.75rem' }}>
                                             <span style={{
                                                 padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.875rem',
-                                                backgroundColor: app.status.toLowerCase() === 'selected' ? '#d1fae5' : 
+                                                backgroundColor: app.status.toLowerCase() === 'accepted' ? '#d1fae5' : 
                                                                  app.status.toLowerCase() === 'rejected' ? '#fee2e2' : '#fef3c7',
-                                                color: app.status.toLowerCase() === 'selected' ? '#065f46' : 
+                                                color: app.status.toLowerCase() === 'accepted' ? '#065f46' : 
                                                        app.status.toLowerCase() === 'rejected' ? '#991b1b' : '#92400e'
                                             }}>
                                                 {app.status}
@@ -204,7 +204,7 @@ const AdminDashboard = () => {
                                                 className="btn" 
                                                 style={{ backgroundColor: '#10b981', padding: '0.5rem' }}
                                                 onClick={() => handleSelectStudent(app._id)}
-                                                disabled={app.status.toLowerCase() === 'selected'}
+                                                disabled={app.status.toLowerCase() === 'accepted'}
                                             >
                                                 Select
                                             </button>
