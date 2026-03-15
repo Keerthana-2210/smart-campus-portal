@@ -6,7 +6,6 @@ const AdminDashboard = () => {
     const [formData, setFormData] = useState({
         companyName: '',
         role: '',
-        description: '',
         location: '',
         stipend: '',
         eligibility: '',
@@ -68,7 +67,6 @@ const AdminDashboard = () => {
                 setFormData({
                     companyName: '',
                     role: '',
-                    description: '',
                     location: '',
                     stipend: '',
                     eligibility: '',
@@ -149,17 +147,6 @@ const AdminDashboard = () => {
                     <div className="form-group">
                         <label>Job Role</label>
                         <input type="text" name="role" value={formData.role} onChange={handleInputChange} required />
-                    </div>
-                    <div className="form-group">
-                        <label>Job Description</label>
-                        <textarea
-                            name="description"
-                            value={formData.description}
-                            onChange={handleInputChange}
-                            required
-                            rows="4"
-                            style={{ width: '100%', padding: '0.75rem', border: '1px solid #ccc', borderRadius: '4px' }}
-                        />
                     </div>
                     <div className="form-group">
                         <label>Location</label>

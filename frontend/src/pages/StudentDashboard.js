@@ -121,10 +121,7 @@ const StudentDashboard = () => {
                                 </span>
                                 <div>
                                     {notif.type === 'internship_selection' ? (
-                                        <>
-                                            <h4 style={{ margin: 0, color: '#166534' }}>Congratulations! You have been shortlisted</h4>
-                                            <p style={{ margin: 0, fontSize: '0.9rem', marginTop: '0.2rem' }}>{notif.message}</p>
-                                        </>
+                                        <h4 style={{ margin: 0, color: '#166534' }}>Congratulations! You have been shortlisted</h4>
                                     ) : (
                                         <span>{notif.message}</span>
                                     )}
