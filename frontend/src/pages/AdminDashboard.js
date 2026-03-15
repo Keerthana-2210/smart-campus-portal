@@ -24,7 +24,7 @@ const AdminDashboard = () => {
     const fetchApplications = async () => {
         try {
             const token = localStorage.getItem('token');
-            const res = await fetch("http://localhost:5000/api/applications", {
+            const res = await fetch("https://smart-campus-portal-bub3.onrender.com/api/applications", {
                 headers: { "Authorization": `Bearer ${token}` }
             });
             if (res.ok) {
@@ -43,7 +43,7 @@ const AdminDashboard = () => {
     const handleCreateInternship = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch("http://localhost:5000/api/internships", {
+            const response = await fetch("https://smart-campus-portal-bub3.onrender.com/api/internships", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(formData)
@@ -73,7 +73,7 @@ const AdminDashboard = () => {
     const handleSelectStudent = async (appId) => {
         try {
             const token = localStorage.getItem('token');
-            const res = await fetch(`http://localhost:5000/api/internships/select/${appId}`, {
+            const res = await fetch(`https://smart-campus-portal-bub3.onrender.com/api/internships/select/${appId}`, {
                 method: "PUT",
                 headers: { "Authorization": `Bearer ${token}` }
             });
@@ -91,7 +91,7 @@ const AdminDashboard = () => {
     const handleRejectStudent = async (appId) => {
         try {
             const token = localStorage.getItem('token');
-            const res = await fetch(`http://localhost:5000/api/applications/${appId}/status`, {
+            const res = await fetch(`https://smart-campus-portal-bub3.onrender.com/api/applications/${appId}/status`, {
                 method: "PUT",
                 headers: { 
                     "Content-Type": "application/json",

@@ -21,7 +21,7 @@ const StudentDashboard = () => {
     const fetchNotifications = async (studentId) => {
         try {
             const token = localStorage.getItem('token');
-            const res = await fetch(`http://localhost:5000/api/notifications/${studentId}`, {
+            const res = await fetch(`https://smart-campus-portal-bub3.onrender.com/api/notifications/${studentId}`, {
                 headers: { "Authorization": `Bearer ${token}` }
             });
             if (res.ok) {
@@ -35,7 +35,7 @@ const StudentDashboard = () => {
 
     const fetchInternships = async () => {
         try {
-            const response = await fetch("http://localhost:5000/api/internships");
+            const response = await fetch("https://smart-campus-portal-bub3.onrender.com/api/internships");
             if (response.ok) {
                 const data = await response.json();
                 setInternships(data);
@@ -49,9 +49,13 @@ const StudentDashboard = () => {
         if (!user) return alert("Please log in to apply");
 
         try {
-            const response = await fetch("http://localhost:5000/api/internships/apply", {
+            const token = localStorage.getItem('token');
+            const response = await fetch("https://smart-campus-portal-bub3.onrender.com/api/internships/apply", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
                 body: JSON.stringify({
                     internshipId,
                     studentId: user._id || user.id

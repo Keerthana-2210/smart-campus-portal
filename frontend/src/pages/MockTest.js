@@ -12,7 +12,7 @@ const MockTest = () => {
 
     // Fetch companies on mount
     useEffect(() => {
-        fetch("http://localhost:5000/api/internships")
+        fetch("https://smart-campus-portal-bub3.onrender.com/api/internships")
             .then(res => res.json())
             .then(data => {
                 // Extract unique company names
@@ -114,7 +114,7 @@ const MockTest = () => {
             const user = userStr ? JSON.parse(userStr) : null;
 
             if (user) {
-                fetch('http://localhost:5000/api/malpractice', {
+                fetch('https://smart-campus-portal-bub3.onrender.com/api/malpractice', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -149,7 +149,7 @@ const MockTest = () => {
             if (user && token) {
                 // Determine mocktest ID. Assuming user clicked a specific test or we have a generic test ID.
                 // For this example since UI doesn't pass one, let's just assume we hit a specific generic endpoint or we get first mocktest
-                const testRes = await fetch("http://localhost:5000/api/mocktest", {
+                const testRes = await fetch("https://smart-campus-portal-bub3.onrender.com/api/mocktest", {
                     headers: { "Authorization": `Bearer ${token}` }
                 });
                 const tests = await testRes.json();
@@ -157,7 +157,7 @@ const MockTest = () => {
                 if (tests && tests.length > 0) {
                     const testId = tests[0]._id; // For demo, just pick the first test
 
-                    const res = await fetch(`http://localhost:5000/api/mocktest/${testId}/submit`, {
+                    const res = await fetch(`https://smart-campus-portal-bub3.onrender.com/api/mocktest/${testId}/submit`, {
                         method: "POST",
                         headers: { 
                             "Content-Type": "application/json",
