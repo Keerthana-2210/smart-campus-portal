@@ -70,6 +70,7 @@ const MockTest = () => {
             submitTest();
         }
         return () => clearInterval(timer);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [testActive, timeLeft]);
 
     useEffect(() => {
@@ -101,6 +102,7 @@ const MockTest = () => {
             window.removeEventListener("blur", handleWindowBlur);
             document.removeEventListener("fullscreenchange", handleFullscreenChange);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [testActive, warnings]);
 
     const recordMalpractice = (reason) => {
